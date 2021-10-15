@@ -26,6 +26,7 @@ public async getTotal (req: Request, res: Response){
     res.json(total); 
     }
 
+    //Agrega pedido a los tickets en True
 public async addPedido (req: Request, res: Response): Promise<void>{
         const { id } = req.params;
         await pool.query('UPDATE ticket set id_pedido = ? WHERE estado = true',[id, req.body]);

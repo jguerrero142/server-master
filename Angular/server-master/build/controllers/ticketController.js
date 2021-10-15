@@ -40,6 +40,7 @@ class TicketController {
             res.json(total);
         });
     }
+    //Agrega pedido a los tickets en True
     addPedido(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
             const { id } = req.params;

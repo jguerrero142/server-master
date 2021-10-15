@@ -14,7 +14,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const database_1 = __importDefault(require("../database"));
 class PedidoController {
-    //Traemos todos los ticket de un User.
+    //Traemos todos los pedidos de un User.
     listDataUser(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
             const { id } = req.params;
@@ -22,6 +22,7 @@ class PedidoController {
             res.json(dataUserPedido);
         });
     }
+    //Obtiene todos los pedidos con la informacion de los usuarios
     list(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
             const pedido = yield database_1.default.query('SELECT (pedido.id),(pedido.created_at),(pedido.valor),(user.id_user) ,(user.nickname),(user.name),(user.picture),(user.email) FROM pedido INNER JOIN user ON user.id_user = pedido.id_user');
@@ -35,6 +36,7 @@ class PedidoController {
             res.json(pedido);
         });
     }
+    //Obtiene los pedidos de un solo usuario
     getOne(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
             const { id } = req.params;
@@ -45,6 +47,7 @@ class PedidoController {
             res.status(404).json({ text: 'el pedido no existe' });
         });
     }
+    //Crea el pedido y obtiene el numero del pedido creado
     create(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
             yield database_1.default.query('INSERT INTO pedido set ?', [req.body]);

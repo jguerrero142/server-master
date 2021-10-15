@@ -3,13 +3,14 @@ import pool from '../database';
 
 class PedidoController {
 
-    //Traemos todos los ticket de un User.
+    //Traemos todos los pedidos de un User.
     public async listDataUser(req: Request, res: Response){
         const { id } = req.params;
         const dataUserPedido = await pool.query('SELECT (pedido.id),(pedido.created_at),(pedido.valor),(user.id_user) ,(user.nickname),(user.name),(user.picture),(user.email) FROM pedido INNER JOIN user ON user.id_user = pedido.id_user WHERE pedido.id_user = ?',[id]);
         res.json(dataUserPedido);  
         }
-
+    
+    //Obtiene todos los pedidos con la informacion de los usuarios
    public async list  (req: Request, res: Response){ 
     const pedido = await pool.query('SELECT (pedido.id),(pedido.created_at),(pedido.valor),(user.id_user) ,(user.nickname),(user.name),(user.picture),(user.email) FROM pedido INNER JOIN user ON user.id_user = pedido.id_user');
     res.json(pedido);  
@@ -20,6 +21,8 @@ class PedidoController {
         const pedido = await pool.query('SELECT * FROM pedido WHERE id_user = ?',[id]);
         res.json(pedido);  
         }
+
+    //Obtiene los pedidos de un solo usuario
     public async getOne  (req: Request, res: Response): Promise<any>{ 
         const { id } = req.params;
         const pedido = await pool.query('SELECT * FROM pedido WHERE id_user = ?',[id]);
@@ -28,7 +31,7 @@ class PedidoController {
         }
         res.status(404).json({text: 'el pedido no existe'});  
         }
-
+        //Crea el pedido y obtiene el numero del pedido creado
     public async create(req: Request, res: Response){
         await pool.query('INSERT INTO pedido set ?', [req.body]);
         const id_pedido = await pool.query('SELECT id FROM pedido WHERE estado_ped = true');
