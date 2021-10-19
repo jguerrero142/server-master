@@ -21,7 +21,8 @@ class PedidoRoutes {
 
         //Rutas creadas
         this.router.get('/user/:id', pedidoController.listOne);
-        this.router.get('/dataPedido/:id', pedidoController.listDataUser);
+        //Obtiene los pedidos del USUARIO
+        this.router.get('/get/:id', pedidoController.listDataUser);
     }
 }
 

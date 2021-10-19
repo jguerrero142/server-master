@@ -17,13 +17,16 @@ class TicketRoutes {
         this.router.put('/:id', ticketController_1.default.update);
         this.router.delete('/:id', ticketController_1.default.delete);
         //Routes creadas
-        //Obtiene los tickets de un pedido
-        this.router.get('/ticketPedido/:id', ticketController_1.default.getTicket);
-        //Obtiene los tickets que estan en estado true
-        this.router.get('/data/ticket/:id', ticketController_1.default.getData);
-        //Obtiene el valor total de los tickets en estado true.
-        this.router.get('/data/total/:id', ticketController_1.default.getTotal);
-        this.router.put('/pedido/id/:id', ticketController_1.default.addPedido);
+        //Obtiene todos los TICKETS de USUARIO
+        this.router.get('/user/:id', ticketController_1.default.getTickets);
+        //Agrega un pedido
+        // this.router.post('/pedido/:id', ticketController.setPedido);
+        // //Obtiene los tickets de un pedido
+        // this.router.get('/ticketPedido/:id', ticketController.getTicket);
+        // //Obtiene los tickets que estan en estado true
+        // this.router.get('/data/ticket/:id', ticketController.getData);
+        // //Obtiene el valor total de los tickets en estado true.
+        // this.router.get('/data/total/:id', ticketController.getTotal);
     }
 }
 const ticketRoutes = new TicketRoutes();

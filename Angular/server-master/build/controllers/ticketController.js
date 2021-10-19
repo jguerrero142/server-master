@@ -14,41 +14,56 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const database_1 = __importDefault(require("../database"));
 class TicketController {
-    getTicket(req, res) {
+    getTickets(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
             const { id } = req.params;
-            const ticket = yield database_1.default.query('SELECT id_ticket,producto.name, producto.valor FROM ticket INNER JOIN producto ON producto.id = ticket.producto WHERE id_pedido =?', [id]);
+            const ticket = yield database_1.default.query('SELECT * FROM ticket WHERE estado = 1 AND user_ticket =?', [id]);
             if (ticket.length > 0) {
                 return res.json(ticket);
             }
             res.status(404).json({ text: 'el pedido no tiene tickets' });
         });
     }
-    //Consulta todos los ticket en true 
-    getData(req, res) {
-        return __awaiter(this, void 0, void 0, function* () {
-            const { id } = req.params;
-            const ticket = yield database_1.default.query('SELECT id_ticket,producto.name, producto.valor FROM ticket INNER JOIN producto ON producto.id = ticket.producto WHERE estado = true AND user_ticket = ?', [id]);
-            res.json(ticket);
-        });
-    }
-    //Consulta el valor TOTAL de los tickets en true
-    getTotal(req, res) {
-        return __awaiter(this, void 0, void 0, function* () {
-            const { id } = req.params;
-            const total = yield database_1.default.query('SELECT SUM(producto.valor) AS Total FROM ticket INNER JOIN producto ON producto.id = ticket.producto WHERE estado = true AND user_ticket = ?', [id]);
-            res.json(total);
-        });
-    }
     //Agrega pedido a los tickets en True
-    addPedido(req, res) {
-        return __awaiter(this, void 0, void 0, function* () {
-            const { id } = req.params;
-            yield database_1.default.query('UPDATE ticket set id_pedido = ? WHERE estado = true', [id, req.body]);
-            yield database_1.default.query('UPDATE ticket set estado = 0 WHERE estado = 1');
-            res.json({ message: 'ticket asignado' });
-        });
-    }
+    // public async setPedido(req: Request, res: Response): Promise<void>{
+    //     const { id } = req.params;
+    //     await pool.query('INSERT INTO ticket set ?', [req.body]);
+    //     await pool.query('UPDATE ticket set id_pedido = ? WHERE estado = true',[id]);
+    //     res.json({message: 'ticket guardados'});
+    // }
+    // public async setPedido (req: Request, res: Response): Promise<void>{
+    // const { id } = req.params;
+    // await pool.query('INSERT INTO ticket set ? ',[req.body]);
+    // // await pool.query('UPDATE ticket set id_pedido = ? WHERE estado = true',[id]);
+    // res.json({message: 'pedido agregado'});
+    // }
+    //     public async getTicket (req: Request, res: Response): Promise<any>{ 
+    //         const { id } = req.params;
+    //         const ticket = await pool.query('SELECT id_ticket,producto.name, producto.valor FROM ticket INNER JOIN producto ON producto.id = ticket.producto WHERE id_pedido =?',[id]);
+    //         if (ticket.length > 0){
+    //             return res.json(ticket);
+    //         }
+    //         res.status(404).json({text: 'el pedido no tiene tickets'});  
+    //         }
+    // //Consulta todos los ticket en true 
+    // public async getData (req: Request, res: Response){
+    //     const { id } = req.params;   
+    //     const ticket = await pool.query('SELECT id_ticket,producto.name, producto.valor FROM ticket INNER JOIN producto ON producto.id = ticket.producto WHERE estado = true AND user_ticket = ?',[id]);
+    //     res.json(ticket); 
+    //     }
+    // //Consulta el valor TOTAL de los tickets en true
+    // public async getTotal (req: Request, res: Response){
+    //     const { id } = req.params;   
+    //     const total = await pool.query('SELECT SUM(producto.valor) AS Total FROM ticket INNER JOIN producto ON producto.id = ticket.producto WHERE estado = true AND user_ticket = ?',[id]);
+    //     res.json(total); 
+    //     }
+    //     //Agrega pedido a los tickets en True
+    // public async addPedido (req: Request, res: Response): Promise<void>{
+    //         const { id } = req.params;
+    //         await pool.query('UPDATE ticket set id_pedido = ? WHERE estado = true',[id, req.body]);
+    //         await pool.query('UPDATE ticket set estado = 0 WHERE estado = 1');
+    //         res.json({message: 'ticket asignado'});
+    //         }
     //Crud Tickets
     list(req, res) {
         return __awaiter(this, void 0, void 0, function* () {

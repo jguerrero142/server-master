@@ -14,22 +14,25 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const database_1 = __importDefault(require("../database"));
 class UserController {
-    list(req, res) {
-        return __awaiter(this, void 0, void 0, function* () {
-            const user = yield database_1.default.query('SELECT * FROM user');
-            res.json(user);
-        });
-    }
     loginUser(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
             const { id } = req.params;
             const user = yield database_1.default.query('SELECT * FROM user WHERE sub =?', [id]);
             if (user.length > 0) {
-                return res.json(user[0]);
+                yield database_1.default.query('UPDATE user set ? WHERE sub =?', [req.body, id]);
+                const uuser = yield database_1.default.query('SELECT * FROM user WHERE sub =?', [id]);
+                return res.json(uuser[0]);
             }
             yield database_1.default.query('INSERT INTO user set sub = ? ', [id]);
+            yield database_1.default.query('UPDATE user set ? WHERE sub =?', [req.body, id]);
             const uuser = yield database_1.default.query('SELECT * FROM user WHERE sub =?', [id]);
             return res.json(uuser[0]);
+        });
+    }
+    list(req, res) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const user = yield database_1.default.query('SELECT * FROM user');
+            res.json(user);
         });
     }
     update(req, res) {

@@ -18,8 +18,9 @@ class UserRoutes {
         this.router.delete('/:id', userController.delete);
         this.router.put('/:id', userController.update);
 
-        //creados
+        //Login
         this.router.post('/login/:id', userController.loginUser);
+        
     }
 }
 

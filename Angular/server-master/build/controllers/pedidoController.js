@@ -18,10 +18,15 @@ class PedidoController {
     listDataUser(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
             const { id } = req.params;
-            const dataUserPedido = yield database_1.default.query('SELECT (pedido.id),(pedido.created_at),(pedido.valor),(user.id_user) ,(user.nickname),(user.name),(user.picture),(user.email) FROM pedido INNER JOIN user ON user.id_user = pedido.id_user WHERE pedido.id_user = ?', [id]);
+            const dataUserPedido = yield database_1.default.query('SELECT * FROM pedido  WHERE id_user = ?', [id]);
             res.json(dataUserPedido);
         });
     }
+    // public async listDataUser(req: Request, res: Response){
+    //     const { id } = req.params;
+    //     const dataUserPedido = await pool.query('SELECT (pedido.id),(pedido.created_at),(pedido.valor),(user.id_user) ,(user.nickname),(user.name),(user.picture),(user.email) FROM pedido INNER JOIN user ON user.id_user = pedido.id_user WHERE pedido.id_user = ?',[id]);
+    //     res.json(dataUserPedido);  
+    //     }
     //Obtiene todos los pedidos con la informacion de los usuarios
     list(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
@@ -51,8 +56,8 @@ class PedidoController {
     create(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
             yield database_1.default.query('INSERT INTO pedido set ?', [req.body]);
-            const id_pedido = yield database_1.default.query('SELECT id FROM pedido WHERE estado_ped = true');
-            yield database_1.default.query('UPDATE pedido set estado_ped = false WHERE estado_ped = true');
+            const id_pedido = yield database_1.default.query('SELECT id FROM pedido WHERE value_pedido = true');
+            yield database_1.default.query('UPDATE pedido set value_pedido = false WHERE value_pedido = true');
             return res.json(id_pedido[0]);
         });
     }

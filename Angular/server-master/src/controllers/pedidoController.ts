@@ -6,9 +6,15 @@ class PedidoController {
     //Traemos todos los pedidos de un User.
     public async listDataUser(req: Request, res: Response){
         const { id } = req.params;
-        const dataUserPedido = await pool.query('SELECT (pedido.id),(pedido.created_at),(pedido.valor),(user.id_user) ,(user.nickname),(user.name),(user.picture),(user.email) FROM pedido INNER JOIN user ON user.id_user = pedido.id_user WHERE pedido.id_user = ?',[id]);
+        const dataUserPedido = await pool.query('SELECT * FROM pedido  WHERE id_user = ?',[id]);
         res.json(dataUserPedido);  
         }
+
+        // public async listDataUser(req: Request, res: Response){
+        //     const { id } = req.params;
+        //     const dataUserPedido = await pool.query('SELECT (pedido.id),(pedido.created_at),(pedido.valor),(user.id_user) ,(user.nickname),(user.name),(user.picture),(user.email) FROM pedido INNER JOIN user ON user.id_user = pedido.id_user WHERE pedido.id_user = ?',[id]);
+        //     res.json(dataUserPedido);  
+        //     }
     
     //Obtiene todos los pedidos con la informacion de los usuarios
    public async list  (req: Request, res: Response){ 
@@ -34,8 +40,8 @@ class PedidoController {
         //Crea el pedido y obtiene el numero del pedido creado
     public async create(req: Request, res: Response){
         await pool.query('INSERT INTO pedido set ?', [req.body]);
-        const id_pedido = await pool.query('SELECT id FROM pedido WHERE estado_ped = true');
-        await pool.query('UPDATE pedido set estado_ped = false WHERE estado_ped = true');
+        const id_pedido = await pool.query('SELECT id FROM pedido WHERE value_pedido = true');
+        await pool.query('UPDATE pedido set value_pedido = false WHERE value_pedido = true');
         return res.json(id_pedido[0]);
         }
         
